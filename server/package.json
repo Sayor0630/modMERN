@@ -24,8 +24,11 @@
     "ioredis": "^5.3.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
+    "respawn": "^2.6.0",
     "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
+    "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
     "typescript": "^5.2.2"
   }
 }
