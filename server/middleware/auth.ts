@@ -9,7 +9,10 @@ export const isAuthenticated = CatchAsyncError(async(req:Request,res:Response,ne
     const access_token = req.cookies.access_token;
 
     if(!access_token){
-        return next(new ErrorHandler("Please login to access this resource",400));
+        return res.status(400).json({
+            success: false,
+            message: "Please login to access this resource"
+        });
     }
 
     const decoded = jwt.verify(access_token,process.env.ACCESS_TOKEN as string) as JwtPayload;
