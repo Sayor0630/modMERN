@@ -51,3 +51,4 @@ redis.set(user._id, JSON.stringify(user) as any);
         user,
         accessToken,
     })
+}
