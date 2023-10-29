@@ -149,12 +149,12 @@ export const loginUser = CatchAsyncError(
 
       if (!user) {
         return next(new ErrorHandler("Invalid email or password", 400));
-      }
+      };
 
       const isPasswordMatched = await user.comparePassword(password);
       if (!isPasswordMatched) {
         return next(new ErrorHandler("Invalid email or password", 400));
-      }
+      };
 
       sendToken(user, 200, res);
     } catch (error: any) {
