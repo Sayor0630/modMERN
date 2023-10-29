@@ -29,6 +29,7 @@ redis.set(user._id, JSON.stringify(user) as any);
         maxAge: accessTokenExpire * 1000,
         httpOnly: true,
         sameSite: 'lax',
+        secure: true,
     };
 
     const refreshTokenOptions: ITokenOptions = {
@@ -36,6 +37,7 @@ redis.set(user._id, JSON.stringify(user) as any);
         maxAge: refreshTokenExpire * 1000,
         httpOnly: true,
         sameSite: 'lax',
+        secure: true,
     };
 
     //only set secure to true in production
