@@ -28,4 +28,4 @@ export const isAuthenticated = CatchAsyncError(async(req:Request,res:Response,ne
 
     next();
 
-});
+}); 
