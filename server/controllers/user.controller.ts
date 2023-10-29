@@ -142,21 +142,37 @@ export const loginUser = CatchAsyncError(
       const { email, password } = req.body as ILoginRequest;
 
       if (!email || !password) {
-        return next(new ErrorHandler("Please provide email and password", 400));
-      };
+        return next(new ErrorHandler("Please enter email and password", 400));
+      }
 
       const user = await userModel.findOne({ email }).select("+password");
 
       if (!user) {
         return next(new ErrorHandler("Invalid email or password", 400));
-      };
+      }
 
       const isPasswordMatched = await user.comparePassword(password);
       if (!isPasswordMatched) {
         return next(new ErrorHandler("Invalid email or password", 400));
-      };
+      }
 
       sendToken(user, 200, res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// logout user
+export const logoutUser = CatchAsyncError(
+  async (reg: Request, res: Response, next: NextFunction) => {
+    try {
+      res.cookie("access_token", "", { maxAge: 1 });
+      res.cookie("refresh_token", "", { maxAge: 1 });
+      res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
