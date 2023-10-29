@@ -25,10 +25,8 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 // unknown route
-app.all("+", (req: Request, res: Response, next: NextFunction) => {
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any;
   err.statusCode = 404;
   next(err);
 });
-
-// https://youtu.be/kf6yyxMck8Y?si=ES8NsCJt_0hODpVi&t=4395
