@@ -6,7 +6,6 @@ import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 
-
 // create course
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -15,12 +14,12 @@ export const uploadCourse = CatchAsyncError(
       const thumbnail = data.thumbnail;
       if (thumbnail) {
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-          folder: "courses"
+          folder: "courses",
         });
 
         data.thumbnail = {
           public_id: myCloud.public_id,
-          url: myCloud.secure_url
+          url: myCloud.secure_url,
         };
       }
 
@@ -44,7 +43,6 @@ export const uploadCourse = CatchAsyncError(
   }
 );
 
-
 // edit course
 export const editCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -57,7 +55,7 @@ export const editCourse = CatchAsyncError(
         await cloudinary.v2.uploader.destroy(thumbnail.public_id);
 
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-          folder: "courses"
+          folder: "courses",
         });
 
         data.thumbnail = {
@@ -83,7 +81,8 @@ export const editCourse = CatchAsyncError(
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
-  });
+  }
+);
 
 // get sigle course --- without purchasing
 export const getSingleCourse = CatchAsyncError(
@@ -116,7 +115,6 @@ export const getSingleCourse = CatchAsyncError(
     }
   }
 );
-
 
 //get all courses --- without purchasing
 export const getAllCourses = CatchAsyncError(
@@ -155,7 +153,8 @@ export const getCourseByUser = CatchAsyncError(
       const courseId = req.params.id;
 
       const courseExists = userCourseList?.find(
-        (course: any) => course._id.toString() === courseId);
+        (course: any) => course._id.toString() === courseId
+      );
 
       if (!courseExists) {
         return next(
@@ -169,7 +168,7 @@ export const getCourseByUser = CatchAsyncError(
 
       res.status(200).json({
         success: true,
-        content
+        content,
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
