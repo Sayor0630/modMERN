@@ -6,7 +6,9 @@ import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 
-// upload course
+
+
+// create course
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,11 +24,28 @@ export const uploadCourse = CatchAsyncError(
           url: myCloud.secure_url
         };
       }
-      createCourse(data, res, next);
+
+      // Create the course in MongoDB
+      const newCourse = new CourseModel(data);
+      await newCourse.save();
+
+      // Update the cache
+      const courses = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+      );
+      await redis.set("allCourses", JSON.stringify(courses));
+
+      res.status(201).json({
+        success: true,
+        course: newCourse,
+      });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
-  });
+  }
+);
+
+
 
 // edit course
 export const editCourse = CatchAsyncError(
@@ -128,6 +147,7 @@ export const getAllCourses = CatchAsyncError(
     }
   }
 );
+
 
 // get course content -- only for valid users
 export const getCourseByUser = CatchAsyncError(
