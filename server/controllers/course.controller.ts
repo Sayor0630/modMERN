@@ -137,8 +137,7 @@ export const getCourseByUser = CatchAsyncError(
       const courseId = req.params.id;
 
       const courseExists = userCourseList?.find(
-        (course: any) => course._id.toString() === courseId
-      );
+        (course: any) => course._id.toString() === courseId);
 
       if (!courseExists) {
         return next(
@@ -152,7 +151,7 @@ export const getCourseByUser = CatchAsyncError(
 
       res.status(200).json({
         success: true,
-        content,
+        content
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
