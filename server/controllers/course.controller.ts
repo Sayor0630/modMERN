@@ -7,7 +7,6 @@ import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 
 
-
 // create course
 export const uploadCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -44,7 +43,6 @@ export const uploadCourse = CatchAsyncError(
     }
   }
 );
-
 
 
 // edit course
@@ -119,6 +117,7 @@ export const getSingleCourse = CatchAsyncError(
   }
 );
 
+
 //get all courses --- without purchasing
 export const getAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -147,7 +146,6 @@ export const getAllCourses = CatchAsyncError(
     }
   }
 );
-
 
 // get course content -- only for valid users
 export const getCourseByUser = CatchAsyncError(
