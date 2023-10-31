@@ -160,12 +160,13 @@ export const loginUser = CatchAsyncError(
 
       const isPasswordMatched = await user.comparePassword(password);
       if (!isPasswordMatched) {
-        return next(new ErrorHandler("Invalid email or password", 400));
+        return next(new ErrorHandler("Invalid password", 400));
       }
 
+    
       sendToken(user, 200, res);
     } catch (error: any) {
-      return next(new ErrorHandler("Invalid email or password", 400));
+      return next(new ErrorHandler(error.message, 400));  // updated by AR
     }
   }
 );
