@@ -226,7 +226,7 @@ export const addQuestion = CatchAsyncError(
 );
 
 
-// add answering question
+// add answer in course question
 interface IAddAnswerData {
   answer: string;
   courseId: string;
@@ -234,26 +234,45 @@ interface IAddAnswerData {
   questionId: string;
 }
 
-// export const addAnswer = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const { answer, courseId, contentId, questionId }: IAddAnswerData = req.body;
+export const addAnswer = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { answer, courseId, contentId, questionId }: IAddAnswerData = req.body;
 
-//     const course = await CourseModel.findById(courseId);
+    const course = await CourseModel.findById(courseId);
 
-//     if (!mongoose.Types.ObjectId.isValid(contentId)) {
-//       return next(new ErrorHandler("Invalid content id", 400));
-//     }
+    if (!mongoose.Types.ObjectId.isValid(contentId)) {
+      return next(new ErrorHandler("Invalid content id", 400));
+    }
 
-//     const courseContent = course?.courseData?.find((item: any) =>
-//       item._id.equals(contentId)
-//     );
+    const courseContent = course?.courseData?.find((item: any) =>
+      item._id.equals(contentId)
+    );
 
-//     if (!courseContent) {
-//       return next(new ErrorHandler("Invalid content id", 400));
-//     }
+    if (!courseContent) {
+      return next(new ErrorHandler("Invalid content id", 400));
+    }
 
-//     const question = courseContent?.questions?.find((item: any) =>
-//   } catch (error: any) {
-//     return next(new ErrorHandler(error.message, 500));
-//   }
-// })
+    const question = courseContent?.questions?.find((item: any) =>
+      item._id.equals(questionId)
+    );
+
+    if (!question) {
+      return next(new ErrorHandler("Invalid question id", 400));
+    }
+
+    // Create a new answer object
+    const newAnswer: any = {
+      user: req.user,
+      answer,
+    }
+
+    // Add this answer to our course content
+    question.questionReplies.push(newAnswer);
+
+    await course?.save();
+
+    
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+})
