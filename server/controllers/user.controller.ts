@@ -189,7 +189,7 @@ export const logoutUser = CatchAsyncError(
   }
 );
 
-// update access token
+// update access token  //checked by { AR }
 export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
