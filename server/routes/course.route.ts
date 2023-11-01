@@ -34,6 +34,6 @@ courseRouter.get("/get-course-content/:id", isAuthenticated, getCourseByUser);
 
 courseRouter.put("/add-question", isAuthenticated, addQuestion);
 
- courseRouter.put("/add-answer", isAuthenticated, addAnswer);
+courseRouter.put("/add-answer", isAuthenticated, addAnswer);
 
 export default courseRouter;
